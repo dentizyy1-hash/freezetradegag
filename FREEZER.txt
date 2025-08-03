@@ -4,7 +4,7 @@ local LocalPlayer = Players.LocalPlayer
 
 -- Create ScreenGui
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "GlazeHub"
+screenGui.Name = "Trade Freezer"
 screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 -- Main Frame
@@ -89,7 +89,7 @@ avatarCorner.Parent = avatar
 local freezeBtn = Instance.new("TextButton")
 freezeBtn.Size = UDim2.new(0.4, -5, 0, 40)
 freezeBtn.Position = UDim2.new(0.05, 0, 1, -50)
-freezeBtn.Text = "Freeze ❄️"
+freezeBtn.Text = "Freeze"
 freezeBtn.TextScaled = true
 freezeBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
 freezeBtn.BackgroundTransparency = 0.2
@@ -105,7 +105,7 @@ freezeCorner.Parent = freezeBtn
 local forceBtn = Instance.new("TextButton")
 forceBtn.Size = UDim2.new(0.4, -5, 0, 40)
 forceBtn.Position = UDim2.new(0.55, 0, 1, -50)
-forceBtn.Text = "Force Accept 🔂"
+forceBtn.Text = "Force Accept"
 forceBtn.TextScaled = true
 forceBtn.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
 forceBtn.BackgroundTransparency = 0.2
@@ -151,7 +151,7 @@ end)
 freezeBtn.MouseButton1Click:Connect(function()
     game.StarterGui:SetCore("SendNotification", {
         Title = "Glaze Hub";
-        Text = "Trade frozen successfully ❄️";
+        Text = "Trade frozen successfully";
         Duration = 3;
     })
 end)
@@ -159,7 +159,7 @@ end)
 forceBtn.MouseButton1Click:Connect(function()
     game.StarterGui:SetCore("SendNotification", {
         Title = "Glaze Hub";
-        Text = "Forced accepted 🔂";
+        Text = "Forced accepted";
         Duration = 3;
     })
 end)
@@ -196,4 +196,5 @@ TweenService:Create(icon, TweenInfo.new(0.6), {ImageTransparency = 0}):Play()
 TweenService:Create(searchBox, TweenInfo.new(0.6), {TextTransparency = 0}):Play()
 TweenService:Create(avatar, TweenInfo.new(0.6), {ImageTransparency = 0.2}):Play()
 TweenService:Create(freezeBtn, TweenInfo.new(0.6), {TextTransparency = 0}):Play()
+
 TweenService:Create(forceBtn, TweenInfo.new(0.6), {TextTransparency = 0}):Play()

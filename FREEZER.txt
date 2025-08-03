@@ -165,16 +165,16 @@ end)
 -- Notifications
 freezeBtn.MouseButton1Click:Connect(function()
     game.StarterGui:SetCore("SendNotification", {
-        Title = "Glaze Hub",
-        Text = "Trade frozen successfully ❄️",
+        Title = "Serenity Script",
+        Text = "Trade frozen successfully",
         Duration = 3
     })
 end)
 
 forceBtn.MouseButton1Click:Connect(function()
     game.StarterGui:SetCore("SendNotification", {
-        Title = "Glaze Hub",
-        Text = "Forced accepted 🔂",
+        Title = "Serenity Script",
+        Text = "Forced accepted",
         Duration = 3
     })
 end)
@@ -189,3 +189,4 @@ tweenObject(searchBox, {TextTransparency = 0}, 0.6)
 tweenObject(avatar, {ImageTransparency = 0.2}, 0.6)
 tweenObject(freezeBtn, {TextTransparency = 0}, 0.6)
 tweenObject(forceBtn, {TextTransparency = 0}, 0.6)
+

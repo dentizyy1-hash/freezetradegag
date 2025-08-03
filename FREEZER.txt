@@ -70,7 +70,7 @@ bgImage.Parent = frame
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 40)
 title.BackgroundTransparency = 1
-title.Text = "Glaze Hub"
+title.Text = "Serenity Script"
 title.TextColor3 = Color3.fromRGB(255, 50, 50)
 title.TextStrokeTransparency = 0.3
 title.TextSize = 22
@@ -189,5 +189,6 @@ tweenObject(searchBox, {TextTransparency = 0}, 0.6)
 tweenObject(avatar, {ImageTransparency = 0.2}, 0.6)
 tweenObject(freezeBtn, {TextTransparency = 0}, 0.6)
 tweenObject(forceBtn, {TextTransparency = 0}, 0.6)
+
 
 

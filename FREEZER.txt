@@ -1,0 +1,199 @@
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local LocalPlayer = Players.LocalPlayer
+
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "GlazeHub"
+screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+-- Main Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 320, 0, 270)
+frame.Position = UDim2.new(0.5, -160, 0.4, 0)
+frame.BackgroundTransparency = 1 -- Start transparent for fade-in
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+frame.Parent = screenGui
+
+-- Background Image
+local bgImage = Instance.new("ImageLabel")
+bgImage.Size = UDim2.new(1, 0, 1, 0)
+bgImage.BackgroundTransparency = 1
+bgImage.Image = "rbxassetid://91357134325968" -- Your uploaded image
+bgImage.ImageTransparency = 0.3
+bgImage.ZIndex = 0
+bgImage.Parent = frame
+
+-- Rounded corners
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = frame
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundTransparency = 1
+title.Text = "Glaze Hub"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextStrokeTransparency = 0.3
+title.TextSize = 22
+title.Font = Enum.Font.GothamBold
+title.ZIndex = 2
+title.Parent = frame
+
+-- Icon next to title
+local icon = Instance.new("ImageLabel")
+icon.Size = UDim2.new(0, 30, 0, 30)
+icon.Position = UDim2.new(0, 10, 0, 5)
+icon.BackgroundTransparency = 1
+icon.Image = "rbxassetid://91357134325968"
+icon.ZIndex = 2
+icon.Parent = frame
+
+-- Search Box
+local searchBox = Instance.new("TextBox")
+searchBox.Size = UDim2.new(1, -20, 0, 35)
+searchBox.Position = UDim2.new(0, 10, 0, 50)
+searchBox.PlaceholderText = "Search Player Name"
+searchBox.Text = ""
+searchBox.TextSize = 18
+searchBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+searchBox.BackgroundTransparency = 0.3
+searchBox.TextColor3 = Color3.new(1,1,1)
+searchBox.ClearTextOnFocus = false
+searchBox.ZIndex = 2
+searchBox.Parent = frame
+
+local searchCorner = Instance.new("UICorner")
+searchCorner.CornerRadius = UDim.new(0, 8)
+searchCorner.Parent = searchBox
+
+-- Avatar Image
+local avatar = Instance.new("ImageLabel")
+avatar.Size = UDim2.new(0, 80, 0, 80)
+avatar.Position = UDim2.new(0.5, -40, 0, 95)
+avatar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+avatar.BackgroundTransparency = 0.2
+avatar.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+avatar.ZIndex = 2
+avatar.Parent = frame
+
+local avatarCorner = Instance.new("UICorner")
+avatarCorner.CornerRadius = UDim.new(1, 0)
+avatarCorner.Parent = avatar
+
+-- Freeze Trade Button
+local freezeBtn = Instance.new("TextButton")
+freezeBtn.Size = UDim2.new(0.4, -5, 0, 40)
+freezeBtn.Position = UDim2.new(0.05, 0, 1, -50)
+freezeBtn.Text = "Freeze ❄️"
+freezeBtn.TextScaled = true
+freezeBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+freezeBtn.BackgroundTransparency = 0.2
+freezeBtn.TextColor3 = Color3.new(1,1,1)
+freezeBtn.ZIndex = 2
+freezeBtn.Parent = frame
+
+local freezeCorner = Instance.new("UICorner")
+freezeCorner.CornerRadius = UDim.new(0, 8)
+freezeCorner.Parent = freezeBtn
+
+-- Force Accept Button
+local forceBtn = Instance.new("TextButton")
+forceBtn.Size = UDim2.new(0.4, -5, 0, 40)
+forceBtn.Position = UDim2.new(0.55, 0, 1, -50)
+forceBtn.Text = "Force Accept 🔂"
+forceBtn.TextScaled = true
+forceBtn.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+forceBtn.BackgroundTransparency = 0.2
+forceBtn.TextColor3 = Color3.new(1,1,1)
+forceBtn.ZIndex = 2
+forceBtn.Parent = frame
+
+local forceCorner = Instance.new("UICorner")
+forceCorner.CornerRadius = UDim.new(0, 8)
+forceCorner.Parent = forceBtn
+
+-- Search Player Function (fixed)
+local function updateAvatar()
+    local name = searchBox.Text:lower()
+    local foundPlayer = nil
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player.Name:lower() == name then
+            foundPlayer = player
+            break
+        end
+    end
+
+    if foundPlayer then
+        local content, isReady = Players:GetUserThumbnailAsync(
+            foundPlayer.UserId,
+            Enum.ThumbnailType.HeadShot,
+            Enum.ThumbnailSize.Size100x100
+        )
+        avatar.Image = content
+    else
+        avatar.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+    end
+end
+
+searchBox.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        updateAvatar()
+    end
+end)
+
+-- Button Notifications
+freezeBtn.MouseButton1Click:Connect(function()
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Glaze Hub";
+        Text = "Trade frozen successfully ❄️";
+        Duration = 3;
+    })
+end)
+
+forceBtn.MouseButton1Click:Connect(function()
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Glaze Hub";
+        Text = "Forced accepted 🔂";
+        Duration = 3;
+    })
+end)
+
+-- Hover Glow Effect Function
+local function addHoverEffect(button, defaultColor, hoverColor)
+    button.MouseEnter:Connect(function()
+        TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = hoverColor}):Play()
+    end)
+    button.MouseLeave:Connect(function()
+        TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = defaultColor}):Play()
+    end)
+end
+
+addHoverEffect(freezeBtn, Color3.fromRGB(100, 100, 255), Color3.fromRGB(150, 150, 255))
+addHoverEffect(forceBtn, Color3.fromRGB(255, 100, 100), Color3.fromRGB(255, 150, 150))
+
+-- Fade-in Animation
+frame.BackgroundTransparency = 1
+bgImage.ImageTransparency = 1
+title.TextTransparency = 1
+icon.ImageTransparency = 1
+searchBox.TextTransparency = 1
+avatar.ImageTransparency = 1
+freezeBtn.TextTransparency = 1
+forceBtn.TextTransparency = 1
+
+wait(0.2)
+
+TweenService:Create(frame, TweenInfo.new(0.6), {BackgroundTransparency = 0.5}):Play()
+TweenService:Create(bgImage, TweenInfo.new(0.6), {ImageTransparency = 0.3}):Play()
+TweenService:Create(title, TweenInfo.new(0.6), {TextTransparency = 0}):Play()
+TweenService:Create(icon, TweenInfo.new(0.6), {ImageTransparency = 0}):Play()
+TweenService:Create(searchBox, TweenInfo.new(0.6), {TextTransparency = 0}):Play()
+TweenService:Create(avatar, TweenInfo.new(0.6), {ImageTransparency = 0.2}):Play()
+TweenService:Create(freezeBtn, TweenInfo.new(0.6), {TextTransparency = 0}):Play()
+TweenService:Create(forceBtn, TweenInfo.new(0.6), {TextTransparency = 0}):Play()

